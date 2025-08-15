@@ -1,0 +1,79 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "spacing": 4,
+  "modules-left": ["sway/workspaces", "sway/mode", "cpu", "custom/gpu", "memory"],
+  "modules-center": ["clock"],
+  "modules-right": ["pulseaudio", "backlight", "battery", "bluetooth", "tray"],
+  "sway/workspaces": {
+    "disable-scroll": true,
+    "all-outputs": true,
+    "format": "{name}"
+  },
+  "clock": {
+    "format": "{:%Y-%m-%d %H:%M}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "format": {
+        "months": "<span color='#ffead3'>{}</span>",
+        "days": "<span color='#ecc6d9'>{}</span>",
+        "weeks": "<span color='#99ffdd'>{}</span>",
+        "weekdays": "<span color='#ffcc66'>{}</span>",
+        "today": "<span color='#ff6699'><b>{}</b></span>"
+      }
+    }
+  },
+  "cpu": {
+    "format": "CPU {usage}%",
+    "tooltip": false
+  },
+  "custom/gpu": {
+    "exec": "nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits",
+    "format": "GPU {}%",
+    "interval": 5,
+    "tooltip": false
+  },
+  "memory": {
+    "format": "Mem {}%",
+    "tooltip": false
+  },
+  "pulseaudio": {
+    "format": "{volume}% {icon}",
+    "format-muted": "Muted {icon}",
+    "format-icons": {
+      "default": ["", "", ""]
+    },
+    "tooltip": false
+  },
+  "backlight": {
+    "format": "{percent}% {icon}",
+    "format-icons": ["", ""],
+    "tooltip": false
+  },
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity}% {icon}",
+    "format-charging": "{capacity}% ",
+    "format-plugged": "{capacity}% ",
+    "format-icons": ["", "", "", "", ""],
+    "tooltip": false
+  },
+  "bluetooth": {
+    "format": " {status}",
+    "format-disabled": "",
+    "format-connected": " {device_alias}",
+    "tooltip-format": "{controller_alias}\t{controller_address}",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
+  },
+  "tray": {
+    "spacing": 10
+  }
+}
