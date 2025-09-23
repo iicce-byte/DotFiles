@@ -42,11 +42,11 @@
       "editor.insertSpaces": true,
       "editor.formatOnSave": false,
       "editor.minimap.enabled": false,
-      "editor.fontFamily": "'JetBrains Mono'",
+      "editor.fontFamily": "'JetBrains Mono', 'JetBrains Mono Nerd'",
       "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
       "editor.experimentalWhitespaceRendering": "font",
       "editor.inlayHints.maximumLength": 0,
-      "editor.inlayHints.fontFamily": "'JetBrains Mono'",
+      "editor.inlayHints.fontFamily": "'JetBrains Mono', 'JetBrains Mono Nerd'",
 
       "[markdown]": {
             "editor.unicodeHighlight.ambiguousCharacters": false,
