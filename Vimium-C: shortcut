@@ -1,0 +1,60 @@
+unmapAll
+# 页面内操作
+map k scrollDown
+map i scrollUp
+map j scrollLeft
+
+map l scrollRight
+map gg scrollToTop
+map G scrollToBottom
+map zj scrollToLeft
+map zl scrollToRight
+
+# map K scrollPageDown
+# map I scrollPageUp
+map r reload
+map p zoomIn
+map P zoomOut
+map u zoomReset
+
+map yy copyCurrentUrl
+map yf LinkHints.activateCopyLinkUrl
+
+
+map v enterVisualMode
+map V enterVisualLineMode
+
+map s LinkHints.activate
+map S LinkHints.activateOpenInNewTab
+# map <a-f> LinkHints.activateWithQueue
+
+# 搜索框
+map o Vomnibar.activate
+map O Vomnibar.activateInNewTab
+map b Vomnibar.activateBookmarks
+map B Vomnibar.activateBookmarksInNewTab
+map T Vomnibar.activateTabs
+map ge Vomnibar.activateEditUrl
+map gE Vomnibar.activateEditUrlInNewTab
+map gn toggleVomnibarStyle
+
+# 页内查找
+map / enterFindMode
+map n performFind
+map N performBackwardsFind
+
+# 标签页和窗口
+map L nextTab
+map J previousTab
+
+map t createTab
+
+map <a-p> togglePinTab
+
+map << moveTabLeft
+map >> moveTabRight
+
+map x removeTab
+map X restoreTab
+# 其他
+map ? showHelp
