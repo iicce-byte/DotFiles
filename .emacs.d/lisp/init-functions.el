@@ -2,9 +2,16 @@
   (interactive)
   (find-file "~/.emacs.d/lisp/init-packages.el")
 )
+
+(defun open-init-lsp()
+  (interactive)
+  (find-file "~/.emacs.d/lisp/init-lsp.el")
+)
+
 (defun insert-manual-tab ()
   (interactive)
   (insert "    "))
-(global-set-key (kbd "S-<tab>") 'insert-manual-tab)
-
+; (global-set-key (kbd "S-<tab>") 'insert-manual-tab)
+; (if (not org-mode-p)
+;     (global-set-key (kbd "S-<tab>")) 'inert-manual-tab)
 (provide 'init-functions)
