@@ -13,6 +13,7 @@
   (evil-set-leader 'visual (kbd "SPC"))
 
   (evil-define-key 'normal 'global
+    (kbd "C-e") 'evil-normal-state
     (kbd "S") 'evil-write
     (kbd "Q") 'evil-window-delete
     (kbd "h") 'evil-insert
@@ -53,9 +54,20 @@
     (kbd "j") 'evil-backward-char
     (kbd "l") 'evil-forward-char
     (kbd "i") 'evil-previous-line
-    (kbd "k") 'evil-next-line)
-)
+    (kbd "k") 'evil-next-line
+    (kbd "C-e") 'evil-normal-state)
+ (evil-define-key 'insert 'global
+  (kbd "C-e") 'evil-normal-state)
+ (with-eval-after-load 'dired
+   (evil-define-key 'normal dired-mode-map
+     (kbd "RET") 'dired-find-file
+     (kbd "d")   'dired-flag-file-deletion
+     (kbd "x")   'dired-do-flagged-delete
+     (kbd "u") 'dired-unmark
+     (kbd "U") 'dired-unmark-all-marks
+     (kbd "s m") 'dired-jump)))
 
-
+(add-hook 'compilation-mode-hook #'evil-normal-state)
+(evil-set-initial-state 'compilation-mode 'normal)
 
 (provide 'init-evil)
