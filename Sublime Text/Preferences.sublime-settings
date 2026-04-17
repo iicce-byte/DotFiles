@@ -1,0 +1,43 @@
+// Settings in here override those in "Default/Preferences.sublime-settings",
+// and are overridden in turn by syntax-specific settings.
+{
+
+    "index_files": false,
+    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "trim_automatic_white_space": true,
+    "ensure_newline_at_eof_on_save": true,
+    "font_face": "DejaVuSansM Nerd Font Mono",
+    "font_size": 18,
+    "format_on_save": false,
+    "terminal_font_face": "DejaVuSansM Nerd Font Mono",
+    "terminal_font_size": 14,
+    "inlay_hints_enabled": false,
+    "draw_white_space": "selection",
+    "scroll_past_end": true,
+    "ligature": true, 
+    "caret_style": "smooth",
+    "highlight_line": true,
+    "ignored_packages":[
+        "Package Control",
+        "Vintage",
+    ],
+    // 主题设置
+    "theme": "Seti.sublime-theme",
+    "color_scheme": "Packages/Monokai Dark/Monokai Dark.tmTheme",
+    "Seti_tab_small": true,
+    "Seti_bold_slctdtab_labels": true,
+    "Seti_lime_tab": true,
+    "Seti_lime_tabclose": true,
+    "Seti_lime_label": true,
+    "Seti_sb_small_padding": true,
+    "Seti_ClosedFolder_anim": true,
+    "Seti_bold_slctdfile_labels": true,
+    "neovintageous_build_version": 13200,
+    "close_windows_when_empty": false,
+    "vintageous_exit_when_quitting_last_window": false,
+    "vintageous_start_in_command_mode": false,
+
+    "relative_line_numbers": true,
+    "word_wrap": true,
+}
