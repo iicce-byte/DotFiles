@@ -2,9 +2,10 @@
 
 
 (require 'init-startup)
-(require 'init-functions)
 (require 'init-elpa)
 
 (require 'init-themes)
 (require 'init-evil)
+(require 'init-treesit)
+(require 'init-conda)
 (require 'init-lsp)
