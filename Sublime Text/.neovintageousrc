@@ -1,0 +1,27 @@
+let mapleader=" "
+set relativenumber
+set wrap
+set showcmd
+set wildmenu
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+set nocompatible
+
+noremap i k
+noremap j h
+noremap k j
+noremap I 5k
+noremap K 5j
+noremap L 5l
+noremap J 5h
+noremap h i
+noremap H I
+
+noremap s :<nop>
+noremap S :w<CR>
+noremap Q :q<CR>
+
+noremap fl :tabnext<CR>
+noremap fj :tabNext<CR>
