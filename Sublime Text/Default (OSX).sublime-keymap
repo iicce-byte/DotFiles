@@ -1,0 +1,33 @@
+[
+    { "keys": ["ctrl+shift+d"], "command": "duplicate_line" },                  // 复制当前行（比默认的更好用）
+    { "keys": ["ctrl+l"], "command": "show_overlay", "args": {"overlay": "goto", "text": ":"} }, // 快速跳到指定行
+    { "keys": ["ctrl+shift+l"], "command": "split_selection_into_lines" },     // 多光标分别编辑
+    { "keys": ["ctrl+d"], "command": "find_under_expand" },                  // 连续选中下一个相同词（最常用！）
+
+    { "keys": ["ctrl+1"], "command": "focus_group", "args": { "group": 0 } },
+    { "keys": ["ctrl+2"], "command": "focus_group", "args": { "group": 1 } },
+    { "keys": ["ctrl+3"], "command": "focus_group", "args": { "group": 2 } },
+    { "keys": ["ctrl+shift+1"], "command": "move_to_group", "args": { "group": 0 } },
+    { "keys": ["ctrl+shift+2"], "command": "move_to_group", "args": { "group": 1 } },
+    { "keys": ["command+b"], "command": "toggle_side_bar" },
+
+    { "keys": ["ctrl+alt+up"], "command": "select_lines", "args": {"forward": false} },
+    { "keys": ["ctrl+alt+down"], "command": "select_lines", "args": {"forward": true} },
+
+    { "keys": ["command+k", "command+u"], "command": "upper_case" },
+    { "keys": ["command+k", "command+l"], "command": "lower_case" },
+    { "keys": ["command+`"], "command": "toggle_terminus_panel" },
+
+    { "keys": ["ctrl+alt+n"], "command": "run_current_file" },
+    { "keys": ["ctrl+enter"], "command": "run_current_file_interactive"},
+
+    { "keys": ["alt+shift+f"], "command": "format_with_clang_format" },
+    { "keys": ["ctrl+alt+r"], "command": "rename_current_file" },
+    { "keys": ["ctrl+alt+d"], "command": "delete_current_file" },
+    { "keys": ["super+n"], "command": "create_file_in_current_dir" },
+    { "keys": ["ctrl+alt+f"], "command": "create_folder_in_current_dir" },
+
+    { "keys": ["super+q"], "command": "exit" },
+    { "keys": ["super+a"], "command": "select_all" },
+    { "keys": ["super+o"], "command": "prompt_open_folder"}
+]
