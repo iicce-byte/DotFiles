@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: docucl
+# key: docucl
+# --
+\documentclass[${1:pt}, letterpaper]{${2:type}}
+$0
