@@ -19,7 +19,6 @@
 
 ;;; 易用性配置
 (setq use-short-answers t)
-;(defalias 'yes-or-no-p 'y-or-n-p)
 (setq create-lockfiles nil
       make-backup-files nil)
 (put 'upcase-region 'disabled nil)
@@ -35,11 +34,11 @@
 (add-hook 'after-init-hook (lambda () (electric-pair-mode 1)))
 (setq electric-pair-inhibit-predicate
       (lambda (c) (eq c ?<)))
-(defun cst/enable-angle-brackets ()
+(defun rc/enable-angle-brackets ()
   (setq-local electric-pair-inhibit-predicate (lambda (c) nil)))
-(add-hook 'nxml-mode-hook #'cst/enable-angle-brackets)
-(add-hook 'xml-mode-hook  #'cst/enable-angle-brackets)
-(add-hook 'web-mode-hook  #'cst/enable-angle-brackets)
+(add-hook 'nxml-mode-hook #'rc/enable-angle-brackets)
+(add-hook 'xml-mode-hook  #'rc/enable-angle-brackets)
+(add-hook 'web-mode-hook  #'rc/enable-angle-brackets)
 
 ;;; indent
 (setq-default standard-indent 4
@@ -53,7 +52,7 @@
               go-indent-level 4)
 
 ;;; whitespace-mode
-(defun cst/set-up-whitespace-handling ()
+(defun rc/set-up-whitespace-handling ()
   (interactive)
   (whitespace-mode 1)
   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
@@ -65,17 +64,22 @@
                               asm-mode-hook fasm-mode-hook
                               go-mode-hook nim-mode-hook
                               yaml-mode-hook porth-mode-hook))
-  (add-hook h #'cst/set-up-whitespace-handling))
+  (add-hook h #'rc/set-up-whitespace-handling))
 
 ;;; 内置补全 / 辅助
 (add-hook 'after-init-hook (lambda () (ido-mode 1)))
 (add-hook 'ido-mode-hook (lambda () (ido-everywhere 1)))
 (add-hook 'after-init-hook #'which-key-mode)
 
+(setq-default dired-dwim-target t)
+(setq dired-kill-when-opening-new-dired-buffer t)
+(setq compile-command "")
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "z") #'dired-up-directory))
+
 ;;; keyboard settings
-(global-set-key (kbd "C-S-d") 'delete-backward-char)
-(global-set-key (kbd "C-c C-c C-d") 'bs-show)
-(global-set-key (kbd "C-c C-m") 'magit)
+(setq delete-pair-blink-delay 0)
+(global-set-key (kbd "C-)") 'delete-pair)
 
 ;;; 标签页配置
 (with-eval-after-load 'tab-bar
@@ -85,6 +89,7 @@
           (lambda ()
             (dolist (dir '("/opt/homebrew/bin"
                            "/opt/homebrew/sbin"
+                           "/Library/TeX/texbin"
                            "~/.local/bin"))
               (let ((p (expand-file-name dir)))
                 (when (file-directory-p p)
@@ -118,7 +123,7 @@
         (switch-to-buffer (other-buffer))))))
 (global-set-key (kbd "C-c w") 'toggle-window-split)
 
-(defun cst/duplicate-line-with-cursor ()
+(defun rc/duplicate-line-with-cursor ()
   "Duplicate current line with moving your cursors"
   (interactive)
   (let ((column (- (point) (point-at-bol)))
@@ -129,7 +134,7 @@
     (insert line)
     (move-beginning-of-line 1)
     (forward-char column)))
-(global-set-key (kbd "C-,") 'cst/duplicate-line-with-cursor)
+(global-set-key (kbd "C-,") 'rc/duplicate-line-with-cursor)
 (global-set-key (kbd "C-.") 'duplicate-line)
 (global-set-key (kbd "C-;") 'copy-from-above-command)
 
@@ -158,18 +163,20 @@
         ("gnu"   . "https://elpa.gnu.org/packages/")))
 (setq package-check-signature nil)
 
-(setq use-package-always-ensure t
+(setq use-package-always-ensure nil
       use-package-always-defer t
       use-package-enable-imenu-support t
       use-package-expand-minimally t)
 
 ;;; smex
-(use-package smex :defer t
+(use-package smex
+  :defer t
   :bind (("M-x" . smex)
          ("C-c C-c M-x" . execute-extended-command)))
 
 ;;; multiple-cursors
-(use-package multiple-cursors :defer t
+(use-package multiple-cursors
+  :defer t
   :bind (("C-S-c C-S-c" . mc/edit-lines)
          ("C-<"         . mc/mark-previous-like-this)
          ("C->"         . mc/mark-next-like-this)
@@ -184,13 +191,14 @@
 (add-to-list 'auto-mode-alist '("\\.[b]\\'" . simpc-mode))
 
 ;;; yasnippet
-;(use-package yasnippet
-;  :defer t
-;  :hook ((prog-mode simpc-mode c++-mode org-mode latex-mode LaTeX-mode) . yas-minor-mode)
-;  :config
-;  (setq yas/triggers-in-field nil
-;        yas-snippet-dirs '("~/.emacs.d/snippets/"))
-;  (yas-reload-all))
+(use-package yasnippet
+  :defer t
+  :hook ((prog-mode simpc-mode c++-mode org-mode
+                    latex-mode LaTeX-mode) . yas-minor-mode)
+  :config
+  (setq yas/triggers-in-field nil
+        yas-snippet-dirs '("~/.emacs.d/snippets/"))
+  (yas-reload-all))
 
 ;;; conda
 (use-package conda
@@ -227,7 +235,8 @@
   (defvar +lsp--deferred-shutdown-timer nil)
   (advice-add 'lsp--shutdown-workspace :around
               (lambda (fn &optional restart)
-                (if (or restart (null +lsp-defer-shutdown) (= +lsp-defer-shutdown 0))
+                (if (or restart (null +lsp-defer-shutdown)
+                        (= +lsp-defer-shutdown 0))
                     (funcall fn restart)
                   (when (timerp +lsp--deferred-shutdown-timer)
                     (cancel-timer +lsp--deferred-shutdown-timer))
@@ -265,39 +274,110 @@
 ;;; magit
 (use-package magit  :defer t)
 
+;;; gitgutter
+(use-package git-gutter
+  :defer t
+  :config
+  (setq git-gutter:update-interval 0.1)
+  (setq git-gutter:live-mode t))
+;(add-hook 'lsp-mode-hook 'git-gutter-mode)
+
+;;; pdf-tools
+(use-package pdf-tools
+  :defer t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.pdf\\'" . pdf-view-mode))
+  (autoload 'pdf-view-mode "pdf-tools" nil t)
+  :config
+  (pdf-tools-install-noverify))
+(add-to-list 'display-buffer-alist
+             '((derived-mode . pdf-view-mode)
+               (display-buffer-reuse-window display-buffer-in-direction)
+               (direction . right)
+               (window-width . 0.5)))
+
 ;;; auctex
-(use-package tex
+(use-package latex
   ;:ensure auctex
   :defer t
   :config
-  (setq TeX-newline-function 'reindent-then-newline-and-indent)
-  (setq LaTeX-indent-level 2)
-  (setq LaTeX-item-indent 2))
+  (setq TeX-newline-function 'reindent-then-newline-and-indent
+        LaTeX-indent-level 2
+        LaTeX-item-indent 2)
+  (setq TeX-source-correlate-method 'synctex
+        TeX-source-correlate-start-server nil
+        TeX-view-program-selection '((output-pdf "PDF Tools")))
+  (TeX-source-correlate-mode 1)
+  (add-to-list 'TeX-command-list
+               '("Tectonic"
+                 "tectonic -X compile --synctex --keep-logs %t"
+                 TeX-run-TeX nil t :help "Run Tectonic"))
 
-; (use-package esup
-;   :defer t
-;   :commands esup
-;   :config
-;   (setq esup-depth 0))
+  (add-to-list 'TeX-command-list
+               '("PDFLaTeX"
+                 "pdflatex -synctex=1 %t"
+                 TeX-run-TeX nil t :help "Run pdfLaTeX"))
+  (add-to-list 'TeX-command-list
+               '("Xelatex"
+                 "xelatex -synctex=1 %t"
+                 TeX-run-TeX nil t :help "Run xelatex"))
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer))
+(add-hook 'LaTeX-mode-hook 'prettify-symbols-mode)
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(with-eval-after-load 'pdf-view
+  (defun my/pdf-view-image-size-fix
+      (orig-fun &optional displayed-p window page)
+    (let ((image (and (not displayed-p)
+                      (not (bound-and-true-p pdf-view-roll-minor-mode))
+                      (image-mode-window-get 'slice window)
+                      (image-mode-window-get 'image window))))
+      (if image
+          (image-size image t)
+        (funcall orig-fun displayed-p window page))))
+  (advice-add 'pdf-view-image-size :around
+              #'my/pdf-view-image-size-fix))
+(with-eval-after-load 'pdf-sync
+  (defun my/pdf-page-to-tex ()
+    "从当前 PDF 页跳到大致对应的 TeX 位置。"
+    (interactive)
+    (let ((size (pdf-view-image-size))
+          (pdf-sync-backward-use-heuristic nil))
+      (pdf-sync-backward-search
+       (/ (car size) 2.0)
+       (/ (cdr size) 2.0))))
+  (define-key pdf-view-mode-map (kbd "J") #'my/pdf-page-to-tex))
+(with-eval-after-load 'tex
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-source-correlate-method 'synctex)
+  (TeX-source-correlate-mode 1))
+;(add-hook 'pdf-view-mode-hook
+;          (lambda ()
+;            (pdf-view-auto-slice-minor-mode 1)))
 
-(defvar cst/packages
+(use-package esup
+  :defer t
+  :commands esup
+  :config
+  (setq esup-depth 0))
+
+(defvar rc/packages
   '(smex multiple-cursors which-key yasnippet conda company
-    lsp-mode lsp-ui flycheck magit auctex)
+         pdf-tools lsp-mode lsp-ui flycheck magit auctex)
   "本配置依赖的第三方包。")
-(defun cst/install-packages ()
-  "install all missing packages of `cst/packages' and refresh quickstart。"
+(defun rc/install-packages ()
+  "install all missing packages of `rc/packages' and refresh quickstart。"
   (interactive)
   (require 'package)
   (package-initialize)
   (package-refresh-contents)
-  (dolist (p cst/packages)
+  (dolist (p rc/packages)
     (unless (package-installed-p p)
       (package-install p)))
   (package-quickstart-refresh)
   (message "installed, please restart Emacs"))
 
 (require 'init-org)
-(require 'init-markdown)
 
 ; # 原生编译所有包和配置
 ; emacs --batch --eval "(progn (require 'comp) (native-compile-async \"~/.emacs.d/\" 'recursively))"
